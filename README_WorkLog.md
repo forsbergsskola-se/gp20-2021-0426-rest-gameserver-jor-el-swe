@@ -66,12 +66,12 @@ for the host name as well as the port number.
 - `Encoding.ASCII.GetString` Can convert a `byte[]` to a `string`. 
 
 So, what is our server supposed to do?
-- Send a TCP Request to acme.com using Port 80
-- Using the HTTP Protocol
+- Send a TCP Request to acme.com using Port 80  //DONE
+- Using the HTTP Protocol //TODO
   - I recommend trying your way with HTTP 0.9 first, then HTTP 1.1
-- Use a TCP Client.
-- Get the Stream.
-- Write a valid HTTP-Request to the Stream.
+- Use a TCP Client.  //DONE
+- Get the Stream.  //DONE
+- Write a valid HTTP-Request to the Stream. //DONE
 - Fetch the response from the Website
 - Search the respone for an occurence of `<title>
     - `<title>` is the start tag of an HTML `title`-Element used for page titles (visible on tabs) in browsers

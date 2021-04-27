@@ -33,21 +33,15 @@ namespace TinyBrowser
                 
                 //- Write a valid HTTP-Request to the Stream.
                 var request = "GET / HTTP/1.1\r\n";
-                request += "Host: www.acme.com\r\n";
+                request += "Host:"+ hostName+"\r\n";
                 request += "\r\n";
-
                 netStream.Write(Encoding.ASCII.GetBytes(request));
+                
                 //- Fetch the response from the Website
-                GetResponseFromWebSite();
+                var stringToParse = GetResponseFromWebSite();
+
+                GenerateConsoleOutput(stringToParse);
                
-                
-                
-                /*- Search the respone for an occurence of `<title>
-                    - `<title>` is the start tag of an HTML `title`-Element used for page titles (visible on tabs) in browsers
-                    - `</title>` is the end tag of an HTML `title`-Element
-                    - Everything inbetween is the HTML-Content of the Element
-                    - And in this case, the title of the website
-                    - Print that string (between `<title>` and `</title>`) to the console.*/
                 
                 
                 /*
@@ -85,7 +79,19 @@ namespace TinyBrowser
             }
         }
 
-        static void GetResponseFromWebSite() {
+        static void GenerateConsoleOutput(string stringToParse) {
+            Console.WriteLine("Opened: " + hostName);
+            
+            /*- Print that string (between `<title>` and `</title>`) to the console.*/
+            int pFrom = stringToParse.IndexOf("<title>", StringComparison.Ordinal) + "<title>".Length;
+            int pTo = stringToParse.IndexOf("</title>", StringComparison.Ordinal);
+
+            String result = stringToParse.Substring(pFrom, pTo - pFrom);
+            Console.WriteLine("Title: " + result);
+            
+        }
+
+        static string GetResponseFromWebSite() {
             if(netStream.CanRead){
                 var myReadBuffer = new byte[1024];
                 var myCompleteMessage = new StringBuilder();
@@ -98,13 +104,11 @@ namespace TinyBrowser
                     myCompleteMessage.AppendFormat("{0}", Encoding.ASCII.GetString(myReadBuffer, 0, numberOfBytesRead));
                 }
                 while(netStream.DataAvailable);
-
-                // Print out the received message to the console.
-                Console.WriteLine("You received the following message : " +
-                                  myCompleteMessage);
+                return myCompleteMessage.ToString();
             }
             else{
                 Console.WriteLine("Sorry.  You cannot read from this NetworkStream.");
+                return "";
             }
         }
 
