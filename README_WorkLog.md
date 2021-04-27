@@ -42,16 +42,21 @@ Create a folder named `TinyBrowser`\
 Open the Terminal in that Folder
 Now, use the command `dotnet new console`\
 If it says `dotnet not found`, you have probably not installed .NET Core 5 SDK, yet.\
-Else, this command should have created a new C# Project for you. You can go ahead and open the `.csproj`-File in your IDE.\
+Else, this command should have created a new C# Project for you. 
+You can go ahead and open the `.csproj`-File in your IDE.\
 
 Add a `.gitignore` in your `TinyBrowser`-Folder that ignores anything you don't want to commit.\
 For C# Console Projects, that's at least the `/bin/` and `/obj/`-Folders.\
-Afterwards, you may safely go ahead and create a new commit `adds time server project`
+Afterwards, you may safely go ahead and create a new commit `adds TinyBrowser project`
 
 ### Implementation
 - You will need: 
-- The `TcpClient`-class which can be created by using its constructor together with arguments for the host name as well as the port number.
+//DONE
+- The `TcpClient`-class which can be created by using its constructor together with arguments 
+for the host name as well as the port number.
+  //DONE
   - `GetStream` again gets you the current stream used for the client. It returns a `Stream`.
+  //DONE
   - `Close` needs to be called when you are done using the `TcpClient`.
 - The `Stream`-class is returned by `GetStream`
   - `Write` allows you to send Bytes over the socket.
