@@ -96,7 +96,7 @@ namespace TinyBrowser
         static void FindAllLinks(string stringToParse) {
             hyperLinks.Clear();
             linkNames.Clear();
-            Console.WriteLine(stringToParse);
+            //Console.WriteLine(stringToParse);
             Console.WriteLine("Opened: " + hostName);
             
             /*- Print that string (between `<title>` and `</title>`) to the console.*/
