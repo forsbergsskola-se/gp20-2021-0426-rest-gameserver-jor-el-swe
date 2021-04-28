@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
@@ -135,23 +136,13 @@ namespace TinyBrowser
 
         static string GetResponseFromWebSite() {
             if(netStream.CanRead){
-                var myReadBuffer = new byte[1024];
-                var myCompleteMessage = new StringBuilder();
-                var numberOfBytesRead = 0;
-
-                // Incoming message may be larger than the buffer size.
-                do{
-                    numberOfBytesRead = netStream.Read(myReadBuffer, 0, myReadBuffer.Length);
-
-                    myCompleteMessage.AppendFormat("{0}", Encoding.ASCII.GetString(myReadBuffer, 0, numberOfBytesRead));
-                }
-                while(netStream.DataAvailable);
-                return myCompleteMessage.ToString();
+                var streamReader = new StreamReader(netStream);
+                var completeMessage = streamReader.ReadToEnd();
+                
+                return completeMessage;
             }
-            
             Console.WriteLine("Sorry.  You cannot read from this NetworkStream.");
             return "";
-            
         }
 
         static void ShutDownProgram() {
