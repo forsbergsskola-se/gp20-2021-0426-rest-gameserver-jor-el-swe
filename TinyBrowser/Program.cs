@@ -65,7 +65,9 @@ namespace TinyBrowser
             Console.WriteLine("you want : " + num + ": " + hyperLinks[num]);
             Console.WriteLine("press any key to follow that link");
             Console.ReadLine();
-            pathName = "/" + hyperLinks[num];
+            pathName = hyperLinks[num];
+            pathName = pathName.TrimStart('/');
+            pathName = "/" + pathName;
         }
 
         static void PrintAllLinks() {
