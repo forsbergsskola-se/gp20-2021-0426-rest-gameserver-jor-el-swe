@@ -20,15 +20,13 @@ namespace TinyBrowser
         const int tcpPort = 80;
         
         static void Main(string[] args) {
-            InitClient();
-
             RunMainLoop();
-            
-            ShutDownProgram();
         }
 
         static void RunMainLoop() {
             while (true) {
+                InitClient();
+                
                 SendGetRequest();
                 
                 var stringToParse = GetResponseFromWebSite();
@@ -38,6 +36,8 @@ namespace TinyBrowser
                 PrintAllLinks();
 
                 AskUserForLink();
+                
+                ShutDownProgram();
             }
         }
 
@@ -61,7 +61,7 @@ namespace TinyBrowser
                     test = false;
                 }
             }
-            Console.WriteLine("you want : " + num);
+            Console.WriteLine("you want : " + num + ": " + hyperLinks[num]);
             Console.WriteLine("press any key to follow that link");
             Console.ReadLine();
             pathName = "/" + hyperLinks[num];
