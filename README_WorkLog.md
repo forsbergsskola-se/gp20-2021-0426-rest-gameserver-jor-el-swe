@@ -67,12 +67,13 @@ for the host name as well as the port number.
 
 So, what is our server supposed to do?
 - Send a TCP Request to acme.com using Port 80  //DONE
-- Using the HTTP Protocol //TODO
+- Using the HTTP Protocol //DONE
   - I recommend trying your way with HTTP 0.9 first, then HTTP 1.1
 - Use a TCP Client.  //DONE
 - Get the Stream.  //DONE
 - Write a valid HTTP-Request to the Stream. //DONE
 - Fetch the response from the Website
+//DONE
 - Search the respone for an occurence of `<title>
     - `<title>` is the start tag of an HTML `title`-Element used for page titles (visible on tabs) in browsers
     - `</title>` is the end tag of an HTML `title`-Element
@@ -94,6 +95,7 @@ So, what is our server supposed to do?
   - Navigate to the next `>`-symbol, so you find the end of the start tag.
   - Every letter until the next occurence of `</a>` are part of the display text.
 - Now, when you have all the information (display text & url for each link)
+//TODO
 - Print them all to the console
   - Recommendation: Use an iterator i, starting at 0.
   - Iterate over a list of all information that you have stored before.

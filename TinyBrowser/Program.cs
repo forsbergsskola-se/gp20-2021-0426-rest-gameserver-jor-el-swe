@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Sockets;
 using System.Text;
 
@@ -7,8 +9,12 @@ namespace TinyBrowser
     class Program {
         static TcpClient tcpClient;
         static NetworkStream netStream;
+        static List<string> linkNames = new List<string>();
+        static List<string> hyperLinks = new List<string>();
+
 
         const string hostName = "www.acme.com";
+        //const string hostName = "www.marc-zaku.de";
         const int tcpPort = 80;
         
         static void Main(string[] args) {
@@ -23,32 +29,53 @@ namespace TinyBrowser
             while (true) {
                 SendGetRequest();
                 
-                //- Fetch the response from the Website
                 var stringToParse = GetResponseFromWebSite();
 
-                GenerateConsoleOutput(stringToParse);
-                
-                
-                /*
-                 *
-                 * - For each occurence:
-  - Find all letters until the next `"`-symbol.
-  - These letters define the local URL to the destination
-  - Remember this, so you can navigate to that URL, if the User decides to follow this link
-  - Navigate to the next `>`-symbol, so you find the end of the start tag.
-  - Every letter until the next occurence of `</a>` are part of the display text.
-- Now, when you have all the information (display text & url for each link)
-- Print them all to the console
-  - Recommendation: Use an iterator i, starting at 0.
-  - Iterate over a list of all information that you have stored before.
-  - Print: `%INDEX%: %DISPLAYNAME% (%URL%)`, e.g.: `3: auxiliary programs (auxprogs.html)`
-- Ask the user for Input
-  - it should be a Number between 0 and the number of options
-  - Follow the link that the user wants to follow and start at the beginning of the application again
-  - (Send a TCP Request to acme.com...)
-                 */
+                FindAllLinks(stringToParse);
+
+                PrintAllLinks();
+
+                AskUserForLink();
                 
                 break;
+            }
+        }
+
+        static void AskUserForLink() {
+            /*- Ask the user for Input
+                - it should be a Number between 0 and the number of options
+                - Follow the link that the user wants to follow and start at the beginning of the application again
+                - (Send a TCP Request to acme.com...)
+            */
+           
+            var test = false;
+            var num = 0;
+            while (!test)
+            {
+                Console.Write("What link do you want to follow: ");
+                test = int.TryParse(Console.ReadLine(), out num);
+                if (num > hyperLinks.Count) {
+                    Console.WriteLine("number too large. press any key to continue");
+                    Console.ReadLine();
+                    PrintAllLinks();
+                    test = false;
+                }
+            }
+            Console.WriteLine("you want : " + num);
+        }
+
+        static void PrintAllLinks() {
+            for (var i = 0; i < linkNames.Count; i++) {
+                var iteratorString = i + ": ";
+                Console.Write(iteratorString);
+                Console.Write(linkNames[i]);
+  
+                var spaces = "";
+                for (var j = 0; j < (50-linkNames[i].Length-iteratorString.Length); j++) {
+                    spaces += " ";
+                }
+                Console.Write(spaces);
+                Console.WriteLine("(" +hyperLinks[i] + ")");
             }
         }
 
@@ -60,60 +87,47 @@ namespace TinyBrowser
             netStream.Write(Encoding.ASCII.GetBytes(request));
         }
 
-        static void GenerateConsoleOutput(string stringToParse) {
+        static void FindAllLinks(string stringToParse) {
+            hyperLinks.Clear();
+            linkNames.Clear();
+            Console.WriteLine(stringToParse);
             Console.WriteLine("Opened: " + hostName);
             
             /*- Print that string (between `<title>` and `</title>`) to the console.*/
-            var pFrom = stringToParse.IndexOf("<title>", StringComparison.Ordinal) + "<title>".Length;
-            var pTo = stringToParse.IndexOf("</title>", StringComparison.Ordinal);
-            var result = stringToParse.Substring(pFrom, pTo - pFrom);
+            var foundString = FindStringBetweenTwoStrings(stringToParse, "<title>", "</title>", 0);
+            Console.WriteLine("Title: " + foundString);
             
-            Console.WriteLine("Title: " + result);
-            
-            //strip all HTML comments
-          /*  while (true) {
-                int start = stringToParse.IndexOf("<!--") + "<!--".Length;
-                if (start == -1) break;
-                int end = stringToParse.IndexOf("-->", start);
-                if (end == -1) break;
-                stringToParse = stringToParse.Remove(start, end - start);
-            }*/
-
-            
-            
-            
-            
+            //Find all the hyperlinks
             var currentPosition = 0;
             //checks for wrap-around
             var largestPosition = 0;
-            while (currentPosition >= largestPosition) {
+            while (true) {
                 currentPosition = stringToParse.IndexOf("<a href=\"",currentPosition, StringComparison.Ordinal) + "<a href=\"".Length;
                 largestPosition = currentPosition > largestPosition ? currentPosition : largestPosition;
 
                 if (largestPosition > currentPosition) break;
                 
-                var readTo = stringToParse.IndexOf("\"",currentPosition, StringComparison.Ordinal);
+                var readTo = stringToParse.IndexOf("\">",currentPosition, StringComparison.Ordinal);
                 string hyperlink = stringToParse.Substring(currentPosition, readTo - currentPosition);
 
                 var findLinkName = readTo;
                 var endOfLinkName = stringToParse.IndexOf("</a>",findLinkName, StringComparison.Ordinal);
                 var startOfLinkName = stringToParse.IndexOf(">", findLinkName, StringComparison.Ordinal) + ">".Length;
+                startOfLinkName = readTo + "\">".Length;
                 string linkName = stringToParse.Substring(startOfLinkName, endOfLinkName - startOfLinkName);
-                Console.Write(linkName);
-                Console.Write("             ___         ");
-                Console.WriteLine(hyperlink);
+                if (linkName.Length > 50) continue;
+                
+                //store in lists here
+                linkNames.Add(linkName);
+                hyperLinks.Add(hyperlink);
             }
-            
-            /*
- * - Search the response for all occurences of `<a href ="`
-- One sample: `<a href="auxprogs.html">auxiliary programs</a>`
-- Without going into too much detail:
-- `<a>` is the start tag of an HTML `hyperlink`-Element used for clickable links in browsers
-- `href="..."` is an HTML url-Attribute used to give the URL to the Hyperlink
-- `</a>` is the end tag of an HTML `hyperlink`-Element
-- Everything inbetween is the HTML-Content of the Element
-- And in this case, describes the Display Text of the Hyperlink
- */
+        }
+
+        static object FindStringBetweenTwoStrings(string sourceString, string startString, string endString, int startAtPosition) {
+            var pFrom = sourceString.IndexOf(startString, startAtPosition, StringComparison.Ordinal) + startString.Length;
+            var pTo = sourceString.IndexOf(endString, StringComparison.Ordinal);
+            var result = sourceString.Substring(pFrom, pTo - pFrom);
+            return result;
         }
 
         static string GetResponseFromWebSite() {
