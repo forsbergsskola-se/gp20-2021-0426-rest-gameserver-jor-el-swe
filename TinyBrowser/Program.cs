@@ -114,13 +114,13 @@ namespace TinyBrowser
                 if (largestPosition > currentPosition) break;
                 
                 var readTo = stringToParse.IndexOf("\">",currentPosition, StringComparison.Ordinal);
-                string hyperlink = stringToParse.Substring(currentPosition, readTo - currentPosition);
+                var hyperlink = stringToParse.Substring(currentPosition, readTo - currentPosition);
 
                 var findLinkName = readTo;
                 var endOfLinkName = stringToParse.IndexOf("</a>",findLinkName, StringComparison.Ordinal);
                 var startOfLinkName = stringToParse.IndexOf(">", findLinkName, StringComparison.Ordinal) + ">".Length;
                 startOfLinkName = readTo + "\">".Length;
-                string linkName = stringToParse.Substring(startOfLinkName, endOfLinkName - startOfLinkName);
+                var linkName = stringToParse.Substring(startOfLinkName, endOfLinkName - startOfLinkName);
                 if (linkName.Length > 50) continue;
                 
                 //store in lists here
@@ -129,7 +129,7 @@ namespace TinyBrowser
             }
         }
 
-        static object FindStringBetweenTwoStrings(string sourceString, string startString, string endString, int startAtPosition) {
+        static string FindStringBetweenTwoStrings(string sourceString, string startString, string endString, int startAtPosition) {
             var pFrom = sourceString.IndexOf(startString, startAtPosition, StringComparison.Ordinal) + startString.Length;
             var pTo = sourceString.IndexOf(endString, StringComparison.Ordinal);
             var result = sourceString.Substring(pFrom, pTo - pFrom);
