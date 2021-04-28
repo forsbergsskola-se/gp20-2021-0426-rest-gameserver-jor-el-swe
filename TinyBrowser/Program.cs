@@ -11,9 +11,11 @@ namespace TinyBrowser
         static NetworkStream netStream;
         static List<string> linkNames = new List<string>();
         static List<string> hyperLinks = new List<string>();
+        const int MAX_LINKNAME_LENGHT = 50;
 
 
         const string hostName = "www.acme.com";
+        static string pathName = "/";
         //const string hostName = "www.marc-zaku.de";
         const int tcpPort = 80;
         
@@ -36,8 +38,6 @@ namespace TinyBrowser
                 PrintAllLinks();
 
                 AskUserForLink();
-                
-                break;
             }
         }
 
@@ -62,6 +62,9 @@ namespace TinyBrowser
                 }
             }
             Console.WriteLine("you want : " + num);
+            Console.WriteLine("press any key to follow that link");
+            Console.ReadLine();
+            pathName = "/" + hyperLinks[num];
         }
 
         static void PrintAllLinks() {
@@ -71,7 +74,7 @@ namespace TinyBrowser
                 Console.Write(linkNames[i]);
   
                 var spaces = "";
-                for (var j = 0; j < (50-linkNames[i].Length-iteratorString.Length); j++) {
+                for (var j = 0; j < (MAX_LINKNAME_LENGHT-linkNames[i].Length-iteratorString.Length); j++) {
                     spaces += " ";
                 }
                 Console.Write(spaces);
@@ -81,7 +84,7 @@ namespace TinyBrowser
 
         static void SendGetRequest() {
             //- Write a valid HTTP-Request to the Stream.
-            var request = "GET / HTTP/1.1\r\n";
+            var request = "GET " + pathName +" HTTP/1.1\r\n";
             request += "Host:"+ hostName+"\r\n";
             request += "\r\n";
             netStream.Write(Encoding.ASCII.GetBytes(request));
@@ -145,10 +148,10 @@ namespace TinyBrowser
                 while(netStream.DataAvailable);
                 return myCompleteMessage.ToString();
             }
-            else{
-                Console.WriteLine("Sorry.  You cannot read from this NetworkStream.");
-                return "";
-            }
+            
+            Console.WriteLine("Sorry.  You cannot read from this NetworkStream.");
+            return "";
+            
         }
 
         static void ShutDownProgram() {
