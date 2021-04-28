@@ -21,39 +21,12 @@ namespace TinyBrowser
 
         static void RunMainLoop() {
             while (true) {
-                /*
-                 *  - `Write` allows you to send Bytes over the socket.
-                    - `Read` allows you to read Bytes over the socket.
-                    - `Close` needs to be called when you are done sending bytes over the stream.
-                    - `Encoding.ASCII.GetBytes` Can convert a `string` to ASCII-`byte[]` for you.
-                    - `Encoding.ASCII.GetString` Can convert a `byte[]` to a `string`. 
-                    
-                 */
-                
-                
-                //- Write a valid HTTP-Request to the Stream.
-                var request = "GET / HTTP/1.1\r\n";
-                request += "Host:"+ hostName+"\r\n";
-                request += "\r\n";
-                netStream.Write(Encoding.ASCII.GetBytes(request));
+                SendGetRequest();
                 
                 //- Fetch the response from the Website
                 var stringToParse = GetResponseFromWebSite();
 
                 GenerateConsoleOutput(stringToParse);
-               
-                
-                
-                /*
-                 * - Search the response for all occurences of `<a href ="`
-  - One sample: `<a href="auxprogs.html">auxiliary programs</a>`
-  - Without going into too much detail:
-    - `<a>` is the start tag of an HTML `hyperlink`-Element used for clickable links in browsers
-    - `href="..."` is an HTML url-Attribute used to give the URL to the Hyperlink
-    - `</a>` is the end tag of an HTML `hyperlink`-Element
-    - Everything inbetween is the HTML-Content of the Element
-    - And in this case, describes the Display Text of the Hyperlink
-                 */
                 
                 
                 /*
@@ -79,16 +52,68 @@ namespace TinyBrowser
             }
         }
 
+        static void SendGetRequest() {
+            //- Write a valid HTTP-Request to the Stream.
+            var request = "GET / HTTP/1.1\r\n";
+            request += "Host:"+ hostName+"\r\n";
+            request += "\r\n";
+            netStream.Write(Encoding.ASCII.GetBytes(request));
+        }
+
         static void GenerateConsoleOutput(string stringToParse) {
             Console.WriteLine("Opened: " + hostName);
             
             /*- Print that string (between `<title>` and `</title>`) to the console.*/
-            int pFrom = stringToParse.IndexOf("<title>", StringComparison.Ordinal) + "<title>".Length;
-            int pTo = stringToParse.IndexOf("</title>", StringComparison.Ordinal);
-
-            String result = stringToParse.Substring(pFrom, pTo - pFrom);
+            var pFrom = stringToParse.IndexOf("<title>", StringComparison.Ordinal) + "<title>".Length;
+            var pTo = stringToParse.IndexOf("</title>", StringComparison.Ordinal);
+            var result = stringToParse.Substring(pFrom, pTo - pFrom);
+            
             Console.WriteLine("Title: " + result);
             
+            //strip all HTML comments
+          /*  while (true) {
+                int start = stringToParse.IndexOf("<!--") + "<!--".Length;
+                if (start == -1) break;
+                int end = stringToParse.IndexOf("-->", start);
+                if (end == -1) break;
+                stringToParse = stringToParse.Remove(start, end - start);
+            }*/
+
+            
+            
+            
+            
+            var currentPosition = 0;
+            //checks for wrap-around
+            var largestPosition = 0;
+            while (currentPosition >= largestPosition) {
+                currentPosition = stringToParse.IndexOf("<a href=\"",currentPosition, StringComparison.Ordinal) + "<a href=\"".Length;
+                largestPosition = currentPosition > largestPosition ? currentPosition : largestPosition;
+
+                if (largestPosition > currentPosition) break;
+                
+                var readTo = stringToParse.IndexOf("\"",currentPosition, StringComparison.Ordinal);
+                string hyperlink = stringToParse.Substring(currentPosition, readTo - currentPosition);
+
+                var findLinkName = readTo;
+                var endOfLinkName = stringToParse.IndexOf("</a>",findLinkName, StringComparison.Ordinal);
+                var startOfLinkName = stringToParse.IndexOf(">", findLinkName, StringComparison.Ordinal) + ">".Length;
+                string linkName = stringToParse.Substring(startOfLinkName, endOfLinkName - startOfLinkName);
+                Console.Write(linkName);
+                Console.Write("             ___         ");
+                Console.WriteLine(hyperlink);
+            }
+            
+            /*
+ * - Search the response for all occurences of `<a href ="`
+- One sample: `<a href="auxprogs.html">auxiliary programs</a>`
+- Without going into too much detail:
+- `<a>` is the start tag of an HTML `hyperlink`-Element used for clickable links in browsers
+- `href="..."` is an HTML url-Attribute used to give the URL to the Hyperlink
+- `</a>` is the end tag of an HTML `hyperlink`-Element
+- Everything inbetween is the HTML-Content of the Element
+- And in this case, describes the Display Text of the Hyperlink
+ */
         }
 
         static string GetResponseFromWebSite() {
