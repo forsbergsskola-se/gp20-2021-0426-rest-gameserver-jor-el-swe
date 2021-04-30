@@ -108,18 +108,23 @@ namespace TinyBrowser
             //checks for wrap-around
             var largestPosition = 0;
             while (true) {
+                
+                //find the hyperlink
                 currentPosition = stringToParse.IndexOf("<a href=\"",currentPosition, StringComparison.Ordinal) + "<a href=\"".Length;
                 largestPosition = currentPosition > largestPosition ? currentPosition : largestPosition;
-
                 if (largestPosition > currentPosition) break;
-                
-                var readTo = stringToParse.IndexOf("\">",currentPosition, StringComparison.Ordinal);
-                var hyperlink = stringToParse.Substring(currentPosition, readTo - currentPosition);
+                var endOfHref = stringToParse.IndexOf("\">",currentPosition, StringComparison.Ordinal);
+                var hyperlink = stringToParse.Substring(currentPosition, endOfHref - currentPosition);
 
-                var findLinkName = readTo;
+                // this link works:
+                //<a href="/jef/telegraph/">Telegraph Bike Lane Blockers</a>
+                //this fails?
+                //<a href="/mailto/?id=wa"><img border="0" src="/mailto/wa.gif" alt="Email"></a>
+                
+                //find the link display name
+                var startOfLinkName = endOfHref + "\">".Length;
+                var findLinkName = endOfHref;
                 var endOfLinkName = stringToParse.IndexOf("</a>",findLinkName, StringComparison.Ordinal);
-                var startOfLinkName = stringToParse.IndexOf(">", findLinkName, StringComparison.Ordinal) + ">".Length;
-                startOfLinkName = readTo + "\">".Length;
                 var linkName = stringToParse.Substring(startOfLinkName, endOfLinkName - startOfLinkName);
                 if (linkName.Length > 50) continue;
                 
@@ -130,8 +135,8 @@ namespace TinyBrowser
         }
 
         static string FindStringBetweenTwoStrings(string sourceString, string startString, string endString, int startAtPosition) {
-            var pFrom = sourceString.IndexOf(startString, startAtPosition, StringComparison.Ordinal) + startString.Length;
-            var pTo = sourceString.IndexOf(endString, StringComparison.Ordinal);
+            var pFrom = sourceString.IndexOf(startString, startAtPosition, StringComparison.OrdinalIgnoreCase) + startString.Length;
+            var pTo = sourceString.IndexOf(endString, StringComparison.OrdinalIgnoreCase);
             var result = sourceString.Substring(pFrom, pTo - pFrom);
             return result;
         }
