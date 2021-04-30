@@ -105,21 +105,15 @@ namespace TinyBrowser
             
             //Find all the hyperlinks
             var currentPosition = 0;
-            //checks for wrap-around
-            var largestPosition = 0;
             while (true) {
-                
                 //find the hyperlink
-                currentPosition = stringToParse.IndexOf("<a href=\"",currentPosition, StringComparison.Ordinal) + "<a href=\"".Length;
-                largestPosition = currentPosition > largestPosition ? currentPosition : largestPosition;
-                if (largestPosition > currentPosition) break;
+                currentPosition = stringToParse.IndexOf("<a href=\"", currentPosition, StringComparison.Ordinal);
+                if (currentPosition == -1)
+                    break;
+                currentPosition += "<a href=\"".Length;
+
                 var endOfHref = stringToParse.IndexOf("\">",currentPosition, StringComparison.Ordinal);
                 var hyperlink = stringToParse.Substring(currentPosition, endOfHref - currentPosition);
-
-                // this link works:
-                //<a href="/jef/telegraph/">Telegraph Bike Lane Blockers</a>
-                //this fails?
-                //<a href="/mailto/?id=wa"><img border="0" src="/mailto/wa.gif" alt="Email"></a>
                 
                 //find the link display name
                 var startOfLinkName = endOfHref + "\">".Length;
