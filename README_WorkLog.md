@@ -95,7 +95,7 @@ So, what is our server supposed to do?
   - Navigate to the next `>`-symbol, so you find the end of the start tag.
   - Every letter until the next occurence of `</a>` are part of the display text.
 - Now, when you have all the information (display text & url for each link)
-//TODO
+//DONE
 - Print them all to the console
   - Recommendation: Use an iterator i, starting at 0.
   - Iterate over a list of all information that you have stored before.
