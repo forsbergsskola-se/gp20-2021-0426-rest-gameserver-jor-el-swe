@@ -13,8 +13,8 @@ namespace TinyBrowser
             HostName = host;
             PathName = path;
         }
-        public string HostName {get;}
-        public string PathName {get; }
+        public string HostName {get; set; }
+        public string PathName {get; set; }
     }
     
     class Program {
@@ -72,67 +72,85 @@ namespace TinyBrowser
                 g – goto [user enter URL]
             */
            
-            var test = false;
-            var num = 0;
-            while (!test)
+            var isUserInputValid = false;
+            while (!isUserInputValid)
             {
-                Console.Write("What link do you want to follow: ");
-                var userInput = Console.ReadLine();
-                test = int.TryParse(userInput, out num);
-                if (num > hyperLinks.Count || num < 0) {
-                    Console.WriteLine("wrong number. press any key to continue");
-                    Console.ReadLine();
-                    PrintAllLinks();
-                    test = false;
+                Console.Write("Which link do you want to follow: ");
+                var userInput = IsUserInputCorrectNumber(out isUserInputValid, out var linkNumber);
+                
+                //we received a correct link number
+                if (isUserInputValid)
+                {
+                    currentHostandPath = TrimPathName(hyperLinks[linkNumber]);
+                   
                 }
-
                 //we did not receive a valid number.
                 //let's try with one of the letter options
-                if (test == false)
+                else
                 {
-                    test = true;
+                    isUserInputValid = true;
                     switch (userInput)
                     {
                         case "r":
                         case "R":
-                        
+                            //on refresh, we don't need to to anything. 
+                            //just keep the current link path for next iteration
                             break;
                         case "f":
                         case "F":
-                        
+                            //move forward
                             break;
                         case "b":
                         case "B":
-                        
+                            //move backward
                             break;
                     
                         case "h":
                         case "H":
+                            //show browser history
                         
                             break;
-                    
+                            //goto user defined link
                         case "g":
                         case "G":
                         
                             break;
 
                         default: 
-                            test = false;
+                            isUserInputValid = false;
                             break;
-                    }
+                    } 
                 }
-       
-            }
-            Console.WriteLine("you want : " + num + ": " + hyperLinks[num]);
+            }//while !valid input
+            
+            Console.WriteLine("you want :" + currentHostandPath.PathName);
             Console.WriteLine("press any key to follow that link");
             Console.ReadLine();
+            
+            pathHistory.Add(currentHostandPath);
+            currentPathIndex++;
+        }
 
-            var pathName = hyperLinks[num];
+        private static string IsUserInputCorrectNumber(out bool test, out int num)
+        {
+            var userInput = Console.ReadLine();
+            test = int.TryParse(userInput, out num);
+            if (num > hyperLinks.Count || num < 0) {
+                Console.WriteLine("wrong number. press any key to continue");
+                Console.ReadLine();
+                PrintAllLinks();
+                test = false;
+            }
+
+            return userInput;
+        }
+
+        private static HostAndPath TrimPathName(string hyperLink)
+        {
+            var pathName = hyperLink;
             pathName = pathName.TrimStart('/');
             pathName = "/" + pathName;
-            pathHistory.Add(new HostAndPath(InitialHostName, pathName));
-            currentPathIndex++;
-            currentHostandPath = pathHistory[currentPathIndex];
+            return new HostAndPath(InitialHostName, pathName);
         }
 
         static void PrintAllLinks() {
