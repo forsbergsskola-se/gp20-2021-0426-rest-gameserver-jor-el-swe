@@ -119,7 +119,8 @@ namespace TinyBrowser
                 var startOfLinkName = endOfHref + "\">".Length;
                 var findLinkName = endOfHref;
                 var endOfLinkName = stringToParse.IndexOf("</a>",findLinkName, StringComparison.Ordinal);
-                var linkName = stringToParse.Substring(startOfLinkName, endOfLinkName - startOfLinkName);
+                //var linkName = stringToParse.Substring(startOfLinkName, endOfLinkName - startOfLinkName);
+                var linkName = stringToParse[startOfLinkName..endOfLinkName];
                 if (linkName.Length > 50) continue;
                 
                 //store in lists here
@@ -131,7 +132,8 @@ namespace TinyBrowser
         static string FindStringBetweenTwoStrings(string sourceString, string startString, string endString, int startAtPosition) {
             var pFrom = sourceString.IndexOf(startString, startAtPosition, StringComparison.OrdinalIgnoreCase) + startString.Length;
             var pTo = sourceString.IndexOf(endString, StringComparison.OrdinalIgnoreCase);
-            var result = sourceString.Substring(pFrom, pTo - pFrom);
+            //var result = sourceString.Substring(pFrom, pTo - pFrom);
+            var result = sourceString[pFrom..pTo];
             return result;
         }
 
