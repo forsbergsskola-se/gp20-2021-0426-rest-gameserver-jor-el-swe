@@ -1,12 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
 namespace TinyBrowser
 {
+    public struct HostAndPath
+    {
+        public HostAndPath(string host, string path)
+        {
+            HostName = host;
+            PathName = path;
+        }
+        public string HostName { get; set; }
+        public string PathName { get; set; }
+    }
+    
     class Program {
         static TcpClient tcpClient;
         static NetworkStream netStream;
@@ -15,12 +25,18 @@ namespace TinyBrowser
         const int MAX_LINKNAME_LENGHT = 50;
 
 
-        const string hostName = "www.acme.com";
-        static string pathName = "/";
-        //const string hostName = "www.marc-zaku.de";
+        const string initialHostName = "www.acme.com";
+        static string initialPathName = "/";
+        
+        private static int currentPathIndex=0;
+        static List<HostAndPath> pathHistory = new List<HostAndPath>();
+        private static HostAndPath currentHostandPath;
+        
         const int tcpPort = 80;
         
         static void Main(string[] args) {
+            pathHistory.Add(new HostAndPath(initialHostName, initialPathName));
+            currentHostandPath = pathHistory[currentPathIndex];
             RunMainLoop();
         }
 
@@ -38,7 +54,7 @@ namespace TinyBrowser
 
                 AskUserForLink();
                 
-                ShutDownProgram();
+                CloseStreamAndTCPClient();
             }
         }
 
@@ -65,9 +81,13 @@ namespace TinyBrowser
             Console.WriteLine("you want : " + num + ": " + hyperLinks[num]);
             Console.WriteLine("press any key to follow that link");
             Console.ReadLine();
-            pathName = hyperLinks[num];
+
+            var pathName = hyperLinks[num];
             pathName = pathName.TrimStart('/');
             pathName = "/" + pathName;
+            pathHistory.Add(new HostAndPath(initialHostName, pathName));
+            currentPathIndex++;
+            currentHostandPath = pathHistory[currentPathIndex];
         }
 
         static void PrintAllLinks() {
@@ -87,8 +107,8 @@ namespace TinyBrowser
 
         static void SendGetRequest() {
             //- Write a valid HTTP-Request to the Stream.
-            var request = "GET " + pathName +" HTTP/1.1\r\n";
-            request += "Host:"+ hostName+"\r\n";
+            var request = "GET " + currentHostandPath.PathName +" HTTP/1.1\r\n";
+            request += "Host:"+ currentHostandPath.HostName+"\r\n";
             request += "\r\n";
             netStream.Write(Encoding.ASCII.GetBytes(request));
         }
@@ -96,8 +116,8 @@ namespace TinyBrowser
         static void FindAllLinks(string stringToParse) {
             hyperLinks.Clear();
             linkNames.Clear();
-            //Console.WriteLine(stringToParse);
-            Console.WriteLine("Opened: " + hostName);
+
+            Console.WriteLine("Opened: " + currentHostandPath.HostName + currentHostandPath.PathName);
             
             /*- Print that string (between `<title>` and `</title>`) to the console.*/
             var foundString = FindStringBetweenTwoStrings(stringToParse, "<title>", "</title>", 0,out var foundPosition);
@@ -146,15 +166,15 @@ namespace TinyBrowser
             return "";
         }
 
-        static void ShutDownProgram() {
-            Console.WriteLine("shutting down...");
+        static void CloseStreamAndTCPClient() {
+            Console.WriteLine("closing stream and TPC client...");
             netStream.Close();
             tcpClient.Close();
             
         }
 
         static void InitClient() {
-            tcpClient = new TcpClient(hostName, tcpPort);
+            tcpClient = new TcpClient(currentHostandPath.HostName, tcpPort);
             netStream = tcpClient.GetStream();
             Console.WriteLine("connected to: " + netStream.Socket.RemoteEndPoint);
         }
