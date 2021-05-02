@@ -100,27 +100,19 @@ namespace TinyBrowser
             Console.WriteLine("Opened: " + hostName);
             
             /*- Print that string (between `<title>` and `</title>`) to the console.*/
-            var foundString = FindStringBetweenTwoStrings(stringToParse, "<title>", "</title>", 0);
+            var foundString = FindStringBetweenTwoStrings(stringToParse, "<title>", "</title>", 0,out var foundPosition);
             Console.WriteLine("Title: " + foundString);
             
             //Find all the hyperlinks
             var currentPosition = 0;
             while (true) {
                 //find the hyperlink
-                currentPosition = stringToParse.IndexOf("<a href=\"", currentPosition, StringComparison.Ordinal);
+                var hyperlink = FindStringBetweenTwoStrings(stringToParse, "<a href=\"", "\">", currentPosition, out currentPosition);
                 if (currentPosition == -1)
                     break;
-                currentPosition += "<a href=\"".Length;
-
-                var endOfHref = stringToParse.IndexOf("\">",currentPosition, StringComparison.Ordinal);
-                var hyperlink = stringToParse.Substring(currentPosition, endOfHref - currentPosition);
                 
                 //find the link display name
-                var startOfLinkName = endOfHref + "\">".Length;
-                var findLinkName = endOfHref;
-                var endOfLinkName = stringToParse.IndexOf("</a>",findLinkName, StringComparison.Ordinal);
-                //var linkName = stringToParse.Substring(startOfLinkName, endOfLinkName - startOfLinkName);
-                var linkName = stringToParse[startOfLinkName..endOfLinkName];
+                var linkName = FindStringBetweenTwoStrings(stringToParse, "\">", "</a>", currentPosition, out currentPosition);
                 if (linkName.Length > 50) continue;
                 
                 //store in lists here
@@ -129,11 +121,17 @@ namespace TinyBrowser
             }
         }
 
-        static string FindStringBetweenTwoStrings(string sourceString, string startString, string endString, int startAtPosition) {
-            var pFrom = sourceString.IndexOf(startString, startAtPosition, StringComparison.OrdinalIgnoreCase) + startString.Length;
-            var pTo = sourceString.IndexOf(endString, StringComparison.OrdinalIgnoreCase);
-            //var result = sourceString.Substring(pFrom, pTo - pFrom);
-            var result = sourceString[pFrom..pTo];
+        static string FindStringBetweenTwoStrings(string sourceString, string startString, string endString, int startAtPosition, out int foundPosition)
+        {
+            foundPosition = sourceString.IndexOf(startString, startAtPosition, StringComparison.OrdinalIgnoreCase);
+            if (foundPosition == -1)
+            {
+                return "";
+            }
+            
+            foundPosition += startString.Length;
+            var pTo = sourceString.IndexOf(endString, foundPosition, StringComparison.OrdinalIgnoreCase);
+            var result = sourceString[foundPosition..pTo];
             return result;
         }
 
