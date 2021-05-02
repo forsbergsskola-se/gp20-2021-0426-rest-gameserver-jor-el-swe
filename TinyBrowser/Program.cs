@@ -13,8 +13,8 @@ namespace TinyBrowser
             HostName = host;
             PathName = path;
         }
-        public string HostName { get; set; }
-        public string PathName { get; set; }
+        public string HostName {get;}
+        public string PathName {get; }
     }
     
     class Program {
@@ -63,6 +63,13 @@ namespace TinyBrowser
                 - it should be a Number between 0 and the number of options
                 - Follow the link that the user wants to follow and start at the beginning of the application again
                 - (Send a TCP Request to acme.com...)
+                
+                Also allow for 
+                b – back
+                f – forward
+                r – refresh
+                h – history
+                g – goto [user enter URL]
             */
            
             var test = false;
@@ -70,13 +77,51 @@ namespace TinyBrowser
             while (!test)
             {
                 Console.Write("What link do you want to follow: ");
-                test = int.TryParse(Console.ReadLine(), out num);
-                if (num > hyperLinks.Count) {
-                    Console.WriteLine("number too large. press any key to continue");
+                var userInput = Console.ReadLine();
+                test = int.TryParse(userInput, out num);
+                if (num > hyperLinks.Count || num < 0) {
+                    Console.WriteLine("wrong number. press any key to continue");
                     Console.ReadLine();
                     PrintAllLinks();
                     test = false;
                 }
+
+                //we did not receive a valid number.
+                //let's try with one of the letter options
+                if (test == false)
+                {
+                    test = true;
+                    switch (userInput)
+                    {
+                        case "r":
+                        case "R":
+                        
+                            break;
+                        case "f":
+                        case "F":
+                        
+                            break;
+                        case "b":
+                        case "B":
+                        
+                            break;
+                    
+                        case "h":
+                        case "H":
+                        
+                            break;
+                    
+                        case "g":
+                        case "G":
+                        
+                            break;
+
+                        default: 
+                            test = false;
+                            break;
+                    }
+                }
+       
             }
             Console.WriteLine("you want : " + num + ": " + hyperLinks[num]);
             Console.WriteLine("press any key to follow that link");
