@@ -20,13 +20,13 @@ namespace TinyBrowser
     class Program {
         static TcpClient tcpClient;
         static NetworkStream netStream;
-        static List<string> linkNames = new List<string>();
-        static List<string> hyperLinks = new List<string>();
+        static readonly List<string> linkNames = new List<string>();
+        static readonly List<string> hyperLinks = new List<string>();
         const int MAX_LINKNAME_LENGHT = 50;
 
 
-        const string initialHostName = "www.acme.com";
-        static string initialPathName = "/";
+        private const string InitialHostName = "www.acme.com";
+        private const string InitialPathName = "/";
         
         private static int currentPathIndex=0;
         static List<HostAndPath> pathHistory = new List<HostAndPath>();
@@ -35,7 +35,7 @@ namespace TinyBrowser
         const int tcpPort = 80;
         
         static void Main(string[] args) {
-            pathHistory.Add(new HostAndPath(initialHostName, initialPathName));
+            pathHistory.Add(new HostAndPath(InitialHostName, InitialPathName));
             currentHostandPath = pathHistory[currentPathIndex];
             RunMainLoop();
         }
@@ -85,7 +85,7 @@ namespace TinyBrowser
             var pathName = hyperLinks[num];
             pathName = pathName.TrimStart('/');
             pathName = "/" + pathName;
-            pathHistory.Add(new HostAndPath(initialHostName, pathName));
+            pathHistory.Add(new HostAndPath(InitialHostName, pathName));
             currentPathIndex++;
             currentHostandPath = pathHistory[currentPathIndex];
         }
