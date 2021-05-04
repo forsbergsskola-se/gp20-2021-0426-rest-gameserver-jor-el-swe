@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace GameRestAPI
 {
     class Program {
-        const int numberOfAPIs = 1;
-        static readonly HttpClient client = new HttpClient();
+        const int NumberOfApIs = 0;
+        static readonly HttpClient Client = new HttpClient();
         static async Task Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -33,7 +33,7 @@ namespace GameRestAPI
                 Console.WriteLine("Choose a REST API to explore: ");
                 Console.WriteLine("0: GitHub");
                 var userInput = Console.ReadLine();
-                userInputFalse = !int.TryParse(userInput, out num) || num > numberOfAPIs;
+                userInputFalse = !int.TryParse(userInput, out num) || num > NumberOfApIs;
             }
             o = num;
         }
@@ -58,15 +58,14 @@ namespace GameRestAPI
 
         static async Task<List<Repository>> ProcessRepositories()
         {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            client.DefaultRequestHeaders.Add("User-Agent", "my repo finder");
+            Client.DefaultRequestHeaders.Accept.Clear();
+            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            Client.DefaultRequestHeaders.Add("User-Agent", "my repo finder");
 
-            var streamTask = client.GetStreamAsync("https://api.github.com/users/jor-el-swe/repos");
+            var streamTask = Client.GetStreamAsync("https://api.github.com/users/jor-el-swe/repos");
             var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
 
             return repositories;
- 
         }
     }
 }
