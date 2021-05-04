@@ -7,12 +7,38 @@ using System.Threading.Tasks;
 
 namespace GameRestAPI
 {
-    class Program
-    {
+    class Program {
+        const int numberOfAPIs = 1;
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
+            
+            CheckUserInput(out var choice);
+            
+            switch (choice) {
+                case 0 :
+                    await DoGitHubAPI();
+                    break;
+                default:
+                    Console.WriteLine("no such API");
+                    break;
+            }
+        }
+
+        static void CheckUserInput(out int o) {
+            var userInputFalse = true;
+            var num = 0;
+            while (userInputFalse) {
+                Console.WriteLine("Choose a REST API to explore: ");
+                Console.WriteLine("0: GitHub");
+                var userInput = Console.ReadLine();
+                userInputFalse = !int.TryParse(userInput, out num) || num > numberOfAPIs;
+            }
+            o = num;
+        }
+
+        static async Task DoGitHubAPI() {
             var repositories = await ProcessRepositories();
             Console.WriteLine();
             Console.WriteLine();
@@ -29,7 +55,7 @@ namespace GameRestAPI
                 
             }
         }
-        
+
         static async Task<List<Repository>> ProcessRepositories()
         {
             client.DefaultRequestHeaders.Accept.Clear();
