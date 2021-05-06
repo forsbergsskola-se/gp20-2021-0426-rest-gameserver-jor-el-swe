@@ -19,6 +19,7 @@ namespace LameScooter
                     "offline" => new OfflineLameScooterRental(),
                     "deprecated" => new DeprecatedLameScooterRental(),
                     "realtime" => new RealTimeLameScooterRental(),
+                    "mongodb" => new MongoDBLameScooterRental(),
                     _ => new OfflineLameScooterRental()
                 };
             }
