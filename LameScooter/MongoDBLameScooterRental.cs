@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -21,12 +20,20 @@ namespace LameScooter {
             var collection = database.GetCollection<BsonDocument>("lamescooters");
             AddConventionPacks();
             var filter = Builders<BsonDocument>.Filter.Eq("name", stationName);
-            var document = collection.Find(filter).First();
+
+            BsonDocument document;
+            try {
+                document = collection.Find(filter).First();
+            }
+            catch {
+                throw new NotFoundException($"Could not find station: {stationName}");
+            }
+            
             var result = BsonSerializer.Deserialize<LameScooterStationList>(document);
             return result.BikesAvailable;
         }
 
-        void AddConventionPacks() {
+        static void AddConventionPacks() {
             var conventionPack = new ConventionPack {new CamelCaseElementNameConvention()};
             ConventionRegistry.Register("camelCase", conventionPack, t => true);
             
