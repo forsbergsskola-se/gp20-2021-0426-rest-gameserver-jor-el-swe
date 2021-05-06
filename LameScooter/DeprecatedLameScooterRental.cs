@@ -36,17 +36,10 @@ namespace LameScooter
 
         private static List<LameScooterStationList> GetScooterStationList(string stationsString)
         {
-            var scooterStationLists = new List<LameScooterStationList>();
-            foreach (var myString in stationsString.Split(new string[] {Environment.NewLine},
-                StringSplitOptions.RemoveEmptyEntries))
-            {
-                var substring = myString.Split(':', StringSplitOptions.TrimEntries);
-                var station = new LameScooterStationList {Name = substring[0], BikesAvailable = int.Parse(substring[1])};
-                scooterStationLists.Add(station);
-            }
-
-
-            return scooterStationLists;
+            return stationsString.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(textRow => textRow.Split(':', StringSplitOptions.TrimEntries))
+                .Select(substring => new LameScooterStationList {Name = substring[0], BikesAvailable = int.Parse(substring[1])})
+                .ToList();
         }
     }
 }
