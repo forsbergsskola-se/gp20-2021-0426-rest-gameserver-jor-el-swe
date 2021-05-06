@@ -11,6 +11,10 @@ namespace LameScooter
     {
         public async Task<int> GetScooterCountInStation(string stationName)
         {
+            if (stationName.Any(char.IsDigit))
+            {
+                throw new ArgumentException("the station name must not contain a number");
+            }
             var reader = new StreamReader("scooters.json");
             
             var jsonString = await reader.ReadToEndAsync();

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LameScooter
@@ -7,11 +9,22 @@ namespace LameScooter
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine(args[0]);
-            ILameScooterRental rental = new OfflineLameScooterRental();
+            //Throw an ArgumentException (provided in System) if the user calls GetScooterCountInStation with a string which contains numbers. 
+            //Catch the exception in the calling code (your Main Method) and print "Invalid Argument: " and the Message-Property of the exception.
+    
 
-            var count = await rental.GetScooterCountInStation(args[0]);
-            Console.Write($"Number of scooters at this station: {count}");
+            ILameScooterRental rental = new OfflineLameScooterRental();
+            var count = 0;
+            try
+            {
+                count = await rental.GetScooterCountInStation(args[0]);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return;
+            }
+            Console.Write($"Number of scooters at this station ({args[0]}): {count}");
         }
     }
 }
