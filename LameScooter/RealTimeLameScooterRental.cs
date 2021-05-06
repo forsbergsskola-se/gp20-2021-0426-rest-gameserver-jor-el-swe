@@ -24,13 +24,14 @@ namespace LameScooter {
                 serverTextjson = await reader.ReadToEndAsync();
             }
             
-            var scooterStations = JsonSerializer.Deserialize<List<LameScooterStationList>>(serverTextjson,new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+            var scooterStations = JsonSerializer.Deserialize<ScooterStations>(serverTextjson,new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
-            if(scooterStations?.Find(station=>station.Name == stationName) == null)
+            
+            if(scooterStations.Stations?.Find(station=>station.Name == stationName) == null)
             {
                 throw new NotFoundException($"Could not find station: {stationName}");
             }
-            return scooterStations.Where(station => station.Name == stationName).Select(station => station.BikesAvailable).FirstOrDefault();
+            return scooterStations.Stations.Where(station => station.Name == stationName).Select(station => station.BikesAvailable).FirstOrDefault();
         }
     }
 }
