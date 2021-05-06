@@ -9,11 +9,8 @@ namespace LameScooter
     {
         static async Task Main(string[] args)
         {
-            //Throw an ArgumentException (provided in System) if the user calls GetScooterCountInStation with a string which contains numbers. 
-            //Catch the exception in the calling code (your Main Method) and print "Invalid Argument: " and the Message-Property of the exception.
-    
-
-            ILameScooterRental rental = new OfflineLameScooterRental();
+            //ILameScooterRental rental = new OfflineLameScooterRental();
+            ILameScooterRental rental = new DeprecatedLameScooterRental();
             var count = 0;
             try
             {
