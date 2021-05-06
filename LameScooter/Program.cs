@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LameScooter
@@ -9,28 +7,22 @@ namespace LameScooter
     {
         static async Task Main(string[] args)
         {
-            /*7. Implement more Command Line Arguments
-            dotnet run Linnanmäki offline
-            dotnet run Sepänkatu deprecated
-            dotnet run Pohjolankatu offline*/
-            ILameScooterRental rental = null;
-            if (args.Length>1)
-            {
-                switch (args[1])
-                {
-                    case "offline":
-                        rental = new OfflineLameScooterRental();
-                        break;
-                    case "deprecated":            
-                        rental = new DeprecatedLameScooterRental();
-                        break;
-                    default:
-                        rental = new OfflineLameScooterRental();
-                        break;
-                }
+            if (args.Length == 0) {
+                Console.WriteLine("not enough arguments. exiting....");
+                Console.WriteLine("dotnet run Linnanmäki realtime dotnet run Sepänkatu realtime dotnet run Pohjolankatu realtime");
+                return;
             }
-            else
-            {
+            
+            ILameScooterRental rental = null;
+            if (args.Length>1) {
+                rental = args[1] switch {
+                    "offline" => new OfflineLameScooterRental(),
+                    "deprecated" => new DeprecatedLameScooterRental(),
+                    "realtime" => new RealTimeLameScooterRental(),
+                    _ => new OfflineLameScooterRental()
+                };
+            }
+            else {
                 rental = new OfflineLameScooterRental();
             }
 
