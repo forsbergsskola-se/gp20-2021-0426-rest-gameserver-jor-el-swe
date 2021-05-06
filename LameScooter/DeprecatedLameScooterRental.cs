@@ -19,9 +19,6 @@ namespace LameScooter
             var stationsString = await reader.ReadToEndAsync();
             var scooterStations = GetScooterStationList(stationsString);
             
-            //5. Create and throw your own Exception
-            //Create your own Exception called NotFoundException. Throw it, if the station can not be found.
-            //Catch it in the calling code and print "Could not find: " and the Message Property of the exception.
             if(scooterStations?.Find(station=>station.Name == stationName) == null)
             {
                 throw new NotFoundException($"Could not find station: {stationName}");
