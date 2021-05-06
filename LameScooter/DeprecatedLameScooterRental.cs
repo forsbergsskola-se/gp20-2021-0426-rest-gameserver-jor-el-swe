@@ -8,11 +8,6 @@ namespace LameScooter
 {
     public class DeprecatedLameScooterRental: ILameScooterRental
     {
-        /*Create a class called DeprecatedLameScooterRental which also implements the ILameScooterRental-Interface.
-         Download scooters.txt and also put it into your project and again make sure, that it gets copied when Building. 
-         Find a way to read the required data from the file.
-         How much code can you share? How much code do you have to duplicate?
-         */
         public async Task<int> GetScooterCountInStation(string stationName)
         {
             if (stationName.Any(char.IsDigit))
