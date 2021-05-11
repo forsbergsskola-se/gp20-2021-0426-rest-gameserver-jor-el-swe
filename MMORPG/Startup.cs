@@ -28,6 +28,10 @@ namespace MMORPG
         {
 
             services.AddControllers();
+            
+            // Register IRepository implementation to the DI-container
+            services.AddSingleton<IRepository, FileRepository>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MMORPG", Version = "v1" });
