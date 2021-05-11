@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 namespace MMORPG {
     public class PlayersController {
         readonly Player _player;
+        IRepository _repository;
         Player[] _players;
         public PlayersController(IRepository repository) {
-            _player = new Player();
+            _repository = repository;
         }
         
         public async Task<Player> Get(Guid id) {
