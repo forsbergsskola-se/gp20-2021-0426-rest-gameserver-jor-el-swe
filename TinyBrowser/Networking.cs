@@ -125,5 +125,9 @@ namespace TinyBrowser {
             CurrentPathIndex = CurrentPathIndex >= PathHistory.Count -1 ? CurrentPathIndex : CurrentPathIndex + 1;
             CurrentHostAndPath = PathHistory[CurrentPathIndex];
         }
+        
+        public static List<HostAndPath> GetHistory() {
+            return PathHistory;
+        }
     }
 }

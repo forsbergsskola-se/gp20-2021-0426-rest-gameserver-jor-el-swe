@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace TinyBrowser {
     public static class UserInput {
@@ -54,6 +56,7 @@ namespace TinyBrowser {
                 Console.WriteLine("R - Refresh current page");
                 Console.WriteLine("B - Back one step");
                 Console.WriteLine("F - Forward one step");
+                Console.WriteLine("H - Show browser history");
                 Console.Write("Which link do you want to follow: ");
                 var userInput = IsUserInputCorrectNumber(out isUserInputValid, out var linkNumber);
                 
@@ -88,7 +91,9 @@ namespace TinyBrowser {
                         case "h":
                         case "H":
                             //show browser history
-                        
+                            var history = Networking.GetHistory();
+                            PrintHistory(history);
+            
                             break;
                             //goto user defined link
                         case "g":
@@ -106,6 +111,13 @@ namespace TinyBrowser {
             Console.WriteLine("you want :" + Networking.CurrentHostAndPath.PathName);
             Console.Write("press any key to follow that link");
             Console.ReadLine();
+        }
+
+        static void PrintHistory(IEnumerable<HostAndPath> history) {
+            Console.WriteLine("History:");
+            foreach (var item in history) {
+                Console.WriteLine($"host: {item.HostName} path: {item.PathName}");
+            }
         }
     }
 }
