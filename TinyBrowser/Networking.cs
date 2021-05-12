@@ -77,11 +77,16 @@ namespace TinyBrowser {
 
         public static void SetCurrentHostAndPath(in int linkNumber) {
             CurrentHostAndPath = ParserHelper.FindHostAndPath(currentHostAndPath.HostName, currentHostAndPath.PathName, HyperLinks[linkNumber]);
+            AddCurrentPath();
         }
 
-        public static void AddCurrentPath() {
-            PathHistory.Add(CurrentHostAndPath);
+        static void AddCurrentPath() {
             CurrentPathIndex++;
+            if(PathHistory.Count <= CurrentPathIndex)
+                PathHistory.Add(CurrentHostAndPath);
+            else {
+                PathHistory[CurrentPathIndex] = CurrentHostAndPath;
+            }
         }
 
         public static void FindAllLinks(string stringToParse) {
@@ -109,6 +114,11 @@ namespace TinyBrowser {
                 LinkNames.Add(linkName);
                 HyperLinks.Add(hyperlink);
             }
+        }
+
+        public static void BrowserBackButton() {
+            CurrentPathIndex = CurrentPathIndex == 0 ? CurrentPathIndex : CurrentPathIndex - 1;
+            CurrentHostAndPath = PathHistory[CurrentPathIndex];
         }
     }
 }

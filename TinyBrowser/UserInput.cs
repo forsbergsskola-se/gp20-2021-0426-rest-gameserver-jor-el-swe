@@ -52,6 +52,7 @@ namespace TinyBrowser {
                 Console.WriteLine("Enter a link number");
                 Console.WriteLine("or");
                 Console.WriteLine("R - Refresh current page");
+                Console.WriteLine("B - Back on step");
                 Console.Write("Which link do you want to follow: ");
                 var userInput = IsUserInputCorrectNumber(out isUserInputValid, out var linkNumber);
                 
@@ -79,6 +80,7 @@ namespace TinyBrowser {
                         case "b":
                         case "B":
                             //move backward
+                            Networking.BrowserBackButton();
                             break;
                     
                         case "h":
@@ -102,10 +104,6 @@ namespace TinyBrowser {
             Console.WriteLine("you want :" + Networking.CurrentHostAndPath.PathName);
             Console.Write("press any key to follow that link");
             Console.ReadLine();
-
-            Networking.AddCurrentPath();
         }
-        
-        
     }
 }
