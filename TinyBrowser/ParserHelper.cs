@@ -24,9 +24,9 @@ namespace TinyBrowser {
             else
             {
                 //check if link is build on the current path, or a "root" link
-                if (hyperLink[0] == '/') {
-                    pathName = hyperLink.TrimStart('/');
-                    pathName = "/" + pathName;  
+                if (hyperLink[0] == '/' || hyperLink[0] == '.') {
+                    //pathName = hyperLink.TrimStart('/');
+                    //pathName = "/" + pathName;  
                 }
                 else {
                     pathName = currentPath + hyperLink;
