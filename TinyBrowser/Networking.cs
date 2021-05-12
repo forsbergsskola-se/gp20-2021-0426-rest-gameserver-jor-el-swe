@@ -8,6 +8,7 @@ namespace TinyBrowser {
     public static class Networking {
         const string InitialHostName = "www.acme.com";
         //const string InitialHostName = "www.milk.com";
+        //const string InitialHostName = "www.chuckjones.com";
         const string InitialPathName = "/";
         
         static TcpClient tcpClient;
@@ -75,7 +76,7 @@ namespace TinyBrowser {
         }
 
         public static void SetCurrentHostAndPath(in int linkNumber) {
-            CurrentHostAndPath = ParserHelper.FindHostAndPath(InitialHostName,HyperLinks[linkNumber]);
+            CurrentHostAndPath = ParserHelper.FindHostAndPath(currentHostAndPath.HostName, currentHostAndPath.PathName, HyperLinks[linkNumber]);
         }
 
         public static void AddCurrentPath() {
