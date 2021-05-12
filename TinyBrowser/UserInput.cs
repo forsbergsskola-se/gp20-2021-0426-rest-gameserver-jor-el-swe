@@ -7,7 +7,7 @@ namespace TinyBrowser {
         {
             var userInput = Console.ReadLine();
             test = int.TryParse(userInput, out num);
-            if (num > Networking.NumberOfHyperLinks || num < 0) {
+            if (num + 1 > Networking.NumberOfHyperLinks || num < 0) {
                 Console.WriteLine("wrong number. press any key to continue");
                 Console.ReadLine();
                 PrintAllLinks();

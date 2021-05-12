@@ -6,14 +6,15 @@ using System.Text;
 
 namespace TinyBrowser {
     public static class Networking {
+        const string InitialHostName = "www.acme.com";
+        //const string InitialHostName = "www.milk.com";
+        const string InitialPathName = "/";
+        
         static TcpClient tcpClient;
         static NetworkStream netStream;
         
         static readonly List<string> LinkNames = new List<string>();
         static readonly List<string> HyperLinks = new List<string>();
-
-        const string InitialHostName = "www.acme.com";
-        const string InitialPathName = "/";
 
         static readonly List<HostAndPath> PathHistory = new List<HostAndPath>();
         static HostAndPath currentHostAndPath;

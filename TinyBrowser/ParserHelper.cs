@@ -4,12 +4,13 @@ namespace TinyBrowser {
      
         public static HostAndPath TrimPathName(string hostname, string hyperLink)
         {
-            var pathName = hyperLink;
-            pathName = pathName.TrimStart('/');
+            var pathName = hyperLink.TrimStart('/');
             pathName = "/" + pathName;
+            
             return new HostAndPath(hostname, pathName);
         }
         
+
         public static string FindStringBetweenTwoStrings(string sourceString, string startString, string endString, int startAtPosition, out int foundPosition)
         {
             foundPosition = sourceString.IndexOf(startString, startAtPosition, StringComparison.OrdinalIgnoreCase);
