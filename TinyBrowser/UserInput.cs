@@ -49,6 +49,9 @@ namespace TinyBrowser {
             var isUserInputValid = false;
             while (!isUserInputValid)
             {
+                Console.WriteLine("Enter a link number");
+                Console.WriteLine("or");
+                Console.WriteLine("R - Refresh current page");
                 Console.Write("Which link do you want to follow: ");
                 var userInput = IsUserInputCorrectNumber(out isUserInputValid, out var linkNumber);
                 
