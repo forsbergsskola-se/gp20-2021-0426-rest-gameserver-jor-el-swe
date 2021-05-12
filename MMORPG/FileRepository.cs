@@ -47,7 +47,7 @@ namespace MMORPG {
 
             }
                 
-            var result = JsonSerializer.Serialize(playersContainer);
+            var result = JsonSerializer.Serialize(playersContainer, new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
             await File.WriteAllTextAsync(TextFilePath, result);
             return modifiedPlayer;
         }
@@ -62,7 +62,7 @@ namespace MMORPG {
                 playerToDelete = playerFound;
             }
             
-            var result = JsonSerializer.Serialize(playersContainer);
+            var result = JsonSerializer.Serialize(playersContainer, typeof(PlayersContainer),new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
             await File.WriteAllTextAsync(TextFilePath, result);
             return playerToDelete;
         }

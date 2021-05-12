@@ -1,1 +1,1 @@
-{"playersList":[{"id":"94d6093e-55fa-4aab-ab00-f89a67f693e6","name":"43t34tkrg\u002Be","score":0,"level":0,"isDeleted":false,"creationTime":"2021-05-12T17:30:24.6508248+02:00"}]}
+{"playersList":[{"id":"a6337475-77a0-464e-bff1-4ce2d6062e0e","name":"onsdagsSpelare","score":0,"level":0,"isDeleted":true,"creationTime":"2021-05-12T17:38:30.7424825+02:00"},{"id":"838daa53-276e-4481-b943-7654abec6b5a","name":"onsdagsSpelare","score":100,"level":0,"isDeleted":true,"creationTime":"2021-05-12T17:38:33.1812993+02:00"}]}
