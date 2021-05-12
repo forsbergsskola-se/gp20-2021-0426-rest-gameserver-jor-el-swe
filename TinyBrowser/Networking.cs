@@ -120,5 +120,10 @@ namespace TinyBrowser {
             CurrentPathIndex = CurrentPathIndex == 0 ? CurrentPathIndex : CurrentPathIndex - 1;
             CurrentHostAndPath = PathHistory[CurrentPathIndex];
         }
+
+        public static void BrowserForwardButton() {
+            CurrentPathIndex = CurrentPathIndex >= PathHistory.Count -1 ? CurrentPathIndex : CurrentPathIndex + 1;
+            CurrentHostAndPath = PathHistory[CurrentPathIndex];
+        }
     }
 }

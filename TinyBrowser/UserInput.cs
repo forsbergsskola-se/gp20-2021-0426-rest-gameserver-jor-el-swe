@@ -52,7 +52,8 @@ namespace TinyBrowser {
                 Console.WriteLine("Enter a link number");
                 Console.WriteLine("or");
                 Console.WriteLine("R - Refresh current page");
-                Console.WriteLine("B - Back on step");
+                Console.WriteLine("B - Back one step");
+                Console.WriteLine("F - Forward one step");
                 Console.Write("Which link do you want to follow: ");
                 var userInput = IsUserInputCorrectNumber(out isUserInputValid, out var linkNumber);
                 
@@ -76,6 +77,7 @@ namespace TinyBrowser {
                         case "f":
                         case "F":
                             //move forward
+                            Networking.BrowserForwardButton();
                             break;
                         case "b":
                         case "B":
