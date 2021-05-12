@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MMORPG {
     public class FileRepository: IRepository {
         class PlayersContainer {
-            public List<Player> playersList;
+            public List<Player> PlayersList { get; set; } = new List<Player>();
         }
         
         const string TextFilePath = "game-dev.txt";
@@ -16,22 +16,22 @@ namespace MMORPG {
             var fileContent = await File.ReadAllTextAsync(TextFilePath);
             var playersContainer = JsonSerializer.Deserialize<PlayersContainer>(fileContent,new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
-            return playersContainer?.playersList.FirstOrDefault(player => player.Id == id);
+            return playersContainer?.PlayersList.FirstOrDefault(player => player.Id == id);
         }
 
         public async Task<Player[]> GetAll() {
             var fileContent = await File.ReadAllTextAsync(TextFilePath);
             var playersContainer = JsonSerializer.Deserialize<PlayersContainer>(fileContent,new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
-            return playersContainer?.playersList.ToArray();
+            return playersContainer?.PlayersList.ToArray();
         }
 
         public async Task<Player> Create(Player player) {
             var fileContent = await File.ReadAllTextAsync(TextFilePath);
             var playersContainer = JsonSerializer.Deserialize<PlayersContainer>(fileContent,new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
-            playersContainer.playersList.Add(player);
+            playersContainer?.PlayersList.Add(player);
 
-            var result = JsonSerializer.Serialize(playersContainer);
+            var result = JsonSerializer.Serialize(playersContainer,typeof(PlayersContainer),new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
             await File.WriteAllTextAsync(TextFilePath, result);
             return player;
         }
@@ -41,7 +41,7 @@ namespace MMORPG {
             var fileContent = await File.ReadAllTextAsync(TextFilePath);
             var playersContainer = JsonSerializer.Deserialize<PlayersContainer>(fileContent,new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
-            foreach (var playerFound in playersContainer.playersList.Where(playerItem => playerItem.Id == id)) {
+            foreach (var playerFound in playersContainer.PlayersList.Where(playerItem => playerItem.Id == id)) {
                 playerFound.Score = player.Score;
                 modifiedPlayer = playerFound;
 
@@ -57,7 +57,7 @@ namespace MMORPG {
             var fileContent = await File.ReadAllTextAsync(TextFilePath);
             var playersContainer = JsonSerializer.Deserialize<PlayersContainer>(fileContent,new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
-            foreach (var playerFound in playersContainer.playersList.Where(playerItem => playerItem.Id == id)) {
+            foreach (var playerFound in playersContainer.PlayersList.Where(playerItem => playerItem.Id == id)) {
                 playerFound.IsDeleted = true;
                 playerToDelete = playerFound;
             }

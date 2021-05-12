@@ -23,7 +23,7 @@ namespace MMORPG {
         }
         [HttpPost("player/CreateNewPlayer")]
         public Task<Player> Create(NewPlayer player) {
-            var newPlayer = new Player {Name = player.Name, CreationTime = DateTime.Now};
+            var newPlayer = new Player {Name = player.Name, CreationTime = DateTime.Now, Id = Guid.NewGuid()};
             return _repository.Create(newPlayer);
         }
         [HttpPut("player/ModifyPlayer")]

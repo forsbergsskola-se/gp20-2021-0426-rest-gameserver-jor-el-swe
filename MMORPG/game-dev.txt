@@ -1,0 +1,1 @@
+{"playersList":[{"id":"94d6093e-55fa-4aab-ab00-f89a67f693e6","name":"43t34tkrg\u002Be","score":0,"level":0,"isDeleted":false,"creationTime":"2021-05-12T17:30:24.6508248+02:00"}]}
