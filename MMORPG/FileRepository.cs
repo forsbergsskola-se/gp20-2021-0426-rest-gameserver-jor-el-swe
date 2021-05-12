@@ -58,12 +58,10 @@ namespace MMORPG {
             var playersContainer = JsonSerializer.Deserialize<PlayersContainer>(fileContent,new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
             foreach (var playerFound in playersContainer.playersList.Where(playerItem => playerItem.Id == id)) {
+                playerFound.IsDeleted = true;
                 playerToDelete = playerFound;
             }
-
-            if(playerToDelete!=null) 
-                playersContainer.playersList.Remove(playerToDelete);
-                
+            
             var result = JsonSerializer.Serialize(playersContainer);
             await File.WriteAllTextAsync(TextFilePath, result);
             return playerToDelete;
