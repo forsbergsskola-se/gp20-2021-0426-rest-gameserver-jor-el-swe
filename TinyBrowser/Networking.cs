@@ -75,7 +75,7 @@ namespace TinyBrowser {
         }
 
         public static void SetCurrentHostAndPath(in int linkNumber) {
-            CurrentHostAndPath = ParserHelper.TrimPathName(InitialHostName,HyperLinks[linkNumber]);
+            CurrentHostAndPath = ParserHelper.FindHostAndPath(InitialHostName,HyperLinks[linkNumber]);
         }
 
         public static void AddCurrentPath() {
@@ -86,9 +86,9 @@ namespace TinyBrowser {
         public static void FindAllLinks(string stringToParse) {
             HyperLinks.Clear();
             LinkNames.Clear();
-            
+            int endPosition;
             /*- Print that string (between `<title>` and `</title>`) to the console.*/
-            var foundString = ParserHelper.FindStringBetweenTwoStrings(stringToParse, "<title>", "</title>", 0,out var foundPosition);
+            var foundString = ParserHelper.FindStringBetweenTwoStrings(stringToParse, "<title>", "</title>", 0,out var foundPosition, out endPosition);
             Console.WriteLine("Opened: " + currentHostAndPath.HostName + currentHostAndPath.PathName);
             Console.WriteLine("Title: " + foundString);
             
@@ -96,12 +96,12 @@ namespace TinyBrowser {
             var currentPosition = 0;
             while (true) {
                 //find the hyperlink
-                var hyperlink = ParserHelper.FindStringBetweenTwoStrings(stringToParse, "<a href=\"", "\">", currentPosition, out currentPosition);
+                var hyperlink = ParserHelper.FindStringBetweenTwoStrings(stringToParse, "<a href=\"", "\">", currentPosition, out currentPosition, out endPosition);
                 if (currentPosition == -1)
                     break;
                 
                 //find the link display name
-                var linkName = ParserHelper.FindStringBetweenTwoStrings(stringToParse, "\">", "</a>", currentPosition, out currentPosition);
+                var linkName = ParserHelper.FindStringBetweenTwoStrings(stringToParse, "\">", "</a>", currentPosition, out currentPosition, out endPosition);
                 if (linkName.Length > 50) continue;
                 
                 //store in lists here
