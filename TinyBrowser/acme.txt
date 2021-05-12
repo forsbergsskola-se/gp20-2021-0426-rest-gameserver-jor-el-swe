@@ -1,0 +1,73 @@
+Opened: www.acme.com
+Title: ACME Laboratories
+<b>ACME Updates.</b>                              updates/
+My r&eacute;sum&eacute;.                          resume.html
+ACME Labs maps                                    maps.html
+ACME Mapper                                       //mapper.acme.com/
+ACME GeoRSS Map Viewer                            GeoRSS/
+Paris Metro map                                   metro/
+ACME Planimeter                                   planimeter/
+ACME Labs freeware library                        software/
+thttpd                                            software/thttpd/
+mini_httpd                                        software/mini_httpd/
+micro_httpd                                       software/micro_httpd/
+spfmilter                                         software/spfmilter/
+pbmplus                                           software/pbmplus/
+currently-lit face of the Earth                   software/globe/
+current phase of the Moon                         software/phoon/
+ACME JavaScript utilities                         javascript/
+ACME Java pages                                   java/
+current phase of the Moon                         java/software/Phoon.html
+Java printf()-equivalent                          java/software/Acme.Fmt.html
+GIF encoder                                       java/software/Acme.JPM.Encoders.GifEncoder.html
+PostScript-like graphics                          java/software/Acme.Psg.html
+web server                                        java/software/Acme.Serve.Serve.html
+ACME Comment Weblet                               /comments/
+Web API Demonstrations                            webapis/
+HTML5 Canvas                                      canvas/
+filter out emailed spam                           mail_filtering/
+ACME Caption Maker                                caption/
+ACME Chartmaker                                   chartmaker/
+ACME Annotator                                    annotator/
+configure and build a PC                          build_a_pc/
+ACME Motherboard Finder                           build_a_pc/boardfinder/
+ACME Digital Camera Database                      digicams/
+ACME Spam Words                                   spamwords/
+web advertising brokers                           ad_brokers/
+search forms page                                 searches.html
+Twoday                                            twitter/twoday/
+set up a FreeBSD firewall                         firewall.html
+HTML sampler                                      html_samples.html
+Unicode characters                                unicode/
+One Month                                         onemonth/
+ACME Label Maker                                  labelmaker/
+ACME License Maker                                licensemaker/
+ACME Heart Maker                                  heartmaker/
+ACME ChuMaker                                     chumaker/
+ACME Chocolate Registry                           chocolate/
+ACME Labs Calendar.                               calendar/
+ACME News                                         news/login/
+Jef Poskanzer's personal page.                    jef/
+acme.com's hardware.                              hardware/
+What does ACME mean?                              what_is_acme/
+Other ACMEs on the web.                           other_acmes.html
+Free acme.com email addresses.                    mail/login/
+Free *.acme.com subdomains.                       names.html
+ACME Labs Freeware License.                       license.html
+ACME Labs Privacy Policy                          privacy.html
+<b>Advertise on acme.com.</b>                     advertise.html
+<b>Donate $5 to help support ACME Labs.</b>       donate/
+<b>ACME Labs T-Shirts.</b>                        http://www.99dogs.com/portal/associate.html?assoc=4SN-JZ9&amp;page=store
+Remembering Chuck Jones                           chuck_jones/
+<img src="//www.google.com/logos/Logo_40wht.gif" border="0" alt="Google" align="middle">//www.google.com/search
+<img width="234" height="60" border="0" src="/resources/images/paypal/logo2.gif">https://secure.paypal.com/affil/pal=jef%40acme.com
+<img class="logo" width="88" height="31" border="0" src="/resources/images/valid-html401-gold.png" alt="valid HTML">https://validator.w3.org/check?uri=referer
+<img class="logo" src="https://ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;" />https://plus.google.com/105401531943780498568?prsrc=3" rel="publisher" style="text-decoration:non
+e;
+<img class="mailto" src="/mailto/wa.gif" alt="email">/mailto/?id=wa
+<img border="0" src="/software/thttpd/logos/thttpd_powered_2.gif" alt="logo">/software/thttpd/
+frobozz07@mail.acme.com                           mailto:frobozz07@mail.acme.com
+plover42@mail.acme.com                            mailto:plover42@mail.acme.com
+plugh4711@mail.acme.com                           mailto:plugh4711@mail.acme.com
+xyzzy23@mail.acme.com                             mailto:xyzzy23@mail.acme.com
+shutting down...
