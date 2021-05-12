@@ -18,6 +18,7 @@ namespace TinyBrowser {
         static readonly List<string> HyperLinks = new List<string>();
 
         static readonly List<HostAndPath> PathHistory = new List<HostAndPath>();
+        static readonly List<HostAndPath> TotalHistory = new List<HostAndPath>();
         static HostAndPath currentHostAndPath;
         
         const int TcpPort = 80;
@@ -126,8 +127,12 @@ namespace TinyBrowser {
             CurrentHostAndPath = PathHistory[CurrentPathIndex];
         }
         
-        public static List<HostAndPath> GetHistory() {
-            return PathHistory;
+        public static IEnumerable<HostAndPath> GetHistory() {
+            return TotalHistory;
+        }
+
+        public static void AddTotalHistory() {
+            TotalHistory.Add(CurrentHostAndPath);
         }
     }
 }

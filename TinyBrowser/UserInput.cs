@@ -111,6 +111,8 @@ namespace TinyBrowser {
             Console.WriteLine("you want :" + Networking.CurrentHostAndPath.PathName);
             Console.Write("press any key to follow that link");
             Console.ReadLine();
+
+            Networking.AddTotalHistory();
         }
 
         static void PrintHistory(IEnumerable<HostAndPath> history) {
