@@ -83,7 +83,7 @@ namespace MMORPG {
             throw new NotImplementedException();
         }
 
-        public Task<Player> Delete(Guid playerId, string itemName) {
+        public Task<Item> Delete(Guid playerId, string itemName) {
             throw new NotImplementedException();
         }
     }

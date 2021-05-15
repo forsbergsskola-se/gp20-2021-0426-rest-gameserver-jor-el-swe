@@ -13,6 +13,6 @@ namespace MMORPG {
         Task<Item[]> GetAllItems(Guid playerId);
         Task<Item> Create(Guid playerId, string itemName);
         Task<Item> Modify(Guid playerId, string itemName, string newItemName);
-        Task<Player> Delete(Guid playerId, string itemName);
+        Task<Item> Delete(Guid playerId, string itemName);
     }
 }
