@@ -10,7 +10,7 @@ namespace MMORPG {
         class PlayersContainer {
             public List<Player> PlayersList { get; set; } = new List<Player>();
         }
-        
+
         const string TextFilePath = "game-dev.txt";
         public async Task<Player> Get(Guid id) {
             var fileContent = await File.ReadAllTextAsync(TextFilePath);
@@ -65,6 +65,26 @@ namespace MMORPG {
             var result = JsonSerializer.Serialize(playersContainer, typeof(PlayersContainer),new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
             await File.WriteAllTextAsync(TextFilePath, result);
             return playerToDelete;
+        }
+
+        public Task<Item> GetItem(Guid playerId, string itemName) {
+            throw new NotImplementedException();
+        }
+
+        public Task<Item[]> GetAllItems(Guid playerId) {
+            throw new NotImplementedException();
+        }
+
+        public Task<Item> Create(Guid playerId, string itemName) {
+            throw new NotImplementedException();
+        }
+
+        public Task<Item> Modify(Guid playerId, string itemName, string newItemName) {
+            throw new NotImplementedException();
+        }
+
+        public Task<Player> Delete(Guid playerId, string itemName) {
+            throw new NotImplementedException();
         }
     }
 }
