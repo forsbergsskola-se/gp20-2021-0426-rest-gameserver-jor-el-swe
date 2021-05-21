@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 namespace GameRestAPI
 {
     class Program {
-        const int NumberOfApIs = 0;
+        const int NumberOfAPIs = 0;
         static readonly HttpClient Client = new HttpClient();
         static async Task Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             
-            CheckUserInput(out var choice, "Choose a REST API to explore: ", "0: GitHub");
+            CheckUserInput(out var choice, "Choose a REST API to explore: ", "0: GitHub",NumberOfAPIs );
             
             switch (choice) {
                 case 0 :
@@ -26,22 +26,53 @@ namespace GameRestAPI
             }
         }
 
-        static void CheckUserInput(out int o, string instructions, string choices) {
+        static void CheckUserInput(out int o, string instructions, string choices, int maxNumChoices) {
             var userInputFalse = true;
             var num = 0;
             while (userInputFalse) {
                 Console.WriteLine(choices);
                 Console.Write(instructions);
                 var userInput = Console.ReadLine();
-                userInputFalse = !int.TryParse(userInput, out num) || num > NumberOfApIs;
+                userInputFalse = !int.TryParse(userInput, out num) || num > maxNumChoices;
             }
             o = num;
         }
 
         static async Task DoGitHubAPI() {
-            Console.Write("Enter a user you would like to inspect\n" +
-                          " (for example jor-el-swe or marczaku):");
-            var userName= Console.ReadLine();
+            var userName = string.Empty;
+            while (true) {
+                Console.Write("Enter a user you would like to inspect\n" +
+                              " (for example jor-el-swe or marczaku. 'q' for quit):");
+                userName= Console.ReadLine();
+                if (userName == "q" || userName == "Q")
+                    break;
+                CheckUserInput(out var choice, "What would you like to see next: ", "0: Followers\n1: Organizations\n2: Repositories", 2);
+                switch (choice) {
+                    case 0:
+                        await CheckFollowers();
+                        break;
+                    case 1:
+                        await CheckOrganizations();
+                        break;
+                    case 2:
+                        await CheckRepositories(userName);
+                        break;
+                    default:
+                        Console.WriteLine("no such API");
+                        break;
+                }
+            }
+        }
+
+        static async Task CheckOrganizations() {
+            throw new NotImplementedException();
+        }
+
+        static async Task CheckFollowers() {
+            throw new NotImplementedException();
+        }
+
+        static async Task CheckRepositories(string userName) {
             var repositories = await ProcessRepositories(userName);
             Console.WriteLine();
             Console.WriteLine();
@@ -55,7 +86,6 @@ namespace GameRestAPI
                 Console.WriteLine(repo.Watchers);
                 Console.WriteLine(repo.LastPush);
                 Console.WriteLine();
-                
             }
         }
 
