@@ -14,7 +14,7 @@ namespace GameRestAPI
         {
             Console.ForegroundColor = ConsoleColor.Green;
             
-            CheckUserInput(out var choice);
+            CheckUserInput(out var choice, "Choose a REST API to explore: ", "0: GitHub");
             
             switch (choice) {
                 case 0 :
@@ -26,12 +26,12 @@ namespace GameRestAPI
             }
         }
 
-        static void CheckUserInput(out int o) {
+        static void CheckUserInput(out int o, string instructions, string choices) {
             var userInputFalse = true;
             var num = 0;
             while (userInputFalse) {
-                Console.WriteLine("Choose a REST API to explore: ");
-                Console.WriteLine("0: GitHub");
+                Console.WriteLine(choices);
+                Console.Write(instructions);
                 var userInput = Console.ReadLine();
                 userInputFalse = !int.TryParse(userInput, out num) || num > NumberOfApIs;
             }
