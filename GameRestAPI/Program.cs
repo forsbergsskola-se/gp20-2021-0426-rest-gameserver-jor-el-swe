@@ -39,10 +39,13 @@ namespace GameRestAPI
         }
 
         static async Task DoGitHubAPI() {
-            var repositories = await ProcessRepositories();
+            Console.Write("Enter a user you would like to inspect\n" +
+                          " (for example jor-el-swe or marczaku):");
+            var userName= Console.ReadLine();
+            var repositories = await ProcessRepositories(userName);
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("jor-el:s repos");
+            Console.WriteLine($"{userName}:s repos");
             Console.WriteLine("**************************");
             foreach (var repo in repositories) {
                 Console.WriteLine(repo.Name);
@@ -56,13 +59,13 @@ namespace GameRestAPI
             }
         }
 
-        static async Task<List<Repository>> ProcessRepositories()
+        static async Task<List<Repository>> ProcessRepositories(string user)
         {
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             Client.DefaultRequestHeaders.Add("User-Agent", "my repo finder");
 
-            var streamTask = Client.GetStreamAsync("https://api.github.com/users/jor-el-swe/repos");
+            var streamTask = Client.GetStreamAsync($"https://api.github.com/users/{user}/repos");
             var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
 
             return repositories;

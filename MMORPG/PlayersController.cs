@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MMORPG {
-    //TODO ask marc
     [ApiController]
     [Route("[controller]")]
     public class PlayersController:ControllerBase {
