@@ -23,15 +23,22 @@ namespace TinyBrowser {
             for (var i = 0; i < Networking.NumberOfLinkNames; i++) {
                 var iteratorString = i + ": ";
                 Console.Write(iteratorString);
-                Console.Write(Networking.GetLinkName(i));
+                var prettyName = Prettify(Networking.GetLinkName(i));
+                Console.Write(prettyName);
   
                 var spaces = "";
-                for (var j = 0; j < (MaxLinkNameLenght-Networking.GetLinkName(i).Length-iteratorString.Length); j++) {
+                for (var j = 0; j < (prettyName.Length-iteratorString.Length); j++) {
                     spaces += " ";
                 }
                 Console.Write(spaces);
                 Console.WriteLine("(" + Networking.GetHyperLink(i) + ")");
             }
+        }
+
+        static string Prettify(string getLinkName) {
+            if (getLinkName.Length <= 15)
+                return getLinkName;
+            return getLinkName[..6] + ".." + getLinkName[^6..];
         }
 
         public static void AskUserForLink() {
