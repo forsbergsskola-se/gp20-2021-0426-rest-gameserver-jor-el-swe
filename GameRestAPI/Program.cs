@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -49,10 +50,10 @@ namespace GameRestAPI
                 CheckUserInput(out var choice, "What would you like to see next: ", "0: Followers\n1: Organizations\n2: Repositories", 2);
                 switch (choice) {
                     case 0:
-                        await CheckFollowers();
+                        await CheckFollowers(userName);
                         break;
                     case 1:
-                        await CheckOrganizations();
+                        await CheckOrganizations(userName);
                         break;
                     case 2:
                         await CheckRepositories(userName);
@@ -64,41 +65,62 @@ namespace GameRestAPI
             }
         }
 
-        static async Task CheckOrganizations() {
-            throw new NotImplementedException();
+        static async Task CheckOrganizations(string userName) {
+            var organizations = await ProcessAPICall(userName, "orgs");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"{userName}:s organizations");
+            Console.WriteLine("**************************");
+            foreach (var org in organizations) {
+                var holder = org as Organization;
+                Console.WriteLine(holder);
+                Console.WriteLine();
+            }
         }
 
-        static async Task CheckFollowers() {
+        static async Task CheckFollowers(string userName) {
             throw new NotImplementedException();
         }
 
         static async Task CheckRepositories(string userName) {
-            var repositories = await ProcessRepositories(userName);
+            var repositories = await ProcessAPICall(userName, "repos");
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine($"{userName}:s repos");
             Console.WriteLine("**************************");
             foreach (var repo in repositories) {
-                Console.WriteLine(repo.Name);
-                Console.WriteLine(repo.Description);
-                Console.WriteLine(repo.GitHubHomeUrl);
-                Console.WriteLine(repo.Homepage);
-                Console.WriteLine(repo.Watchers);
-                Console.WriteLine(repo.LastPush);
+                var holder = repo as Repository;
+                Console.WriteLine(holder.Name);
+                Console.WriteLine(holder.Description);
+                Console.WriteLine(holder.GitHubHomeUrl);
+                Console.WriteLine(holder.Homepage);
+                Console.WriteLine(holder.Watchers);
+                Console.WriteLine(holder.LastPush);
                 Console.WriteLine();
             }
         }
 
-        static async Task<List<Repository>> ProcessRepositories(string user)
-        {
+        static async Task<IList> ProcessAPICall(string user, string operation) {
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             Client.DefaultRequestHeaders.Add("User-Agent", "my repo finder");
 
-            var streamTask = Client.GetStreamAsync($"https://api.github.com/users/{user}/repos");
-            var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
+            var streamTask = Client.GetStreamAsync($"https://api.github.com/users/{user}/{operation}");
 
-            return repositories;
+            switch (operation) {
+                case "repos":
+                    return await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
+                    break;
+                case "orgs":
+                    return  await JsonSerializer.DeserializeAsync<List<Organization>>(await streamTask);
+                    break;
+                case "followers":
+                    return await JsonSerializer.DeserializeAsync<List<Follower>>(await streamTask);
+                    break;
+                default:
+                    return null;
+            }
         }
     }
+    
 }
