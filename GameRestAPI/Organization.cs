@@ -3,20 +3,14 @@ using System.Text.Json.Serialization;
 
 namespace GameRestAPI {
     class Organization {
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
+        [JsonPropertyName("login")]
+        public string Login { get; set; }
         
-        [JsonPropertyName("company")]
-        public string Company { get; set; }
+        [JsonPropertyName("url")]
+        public string URL { get; set; }
 
-        [JsonPropertyName("blog")]
-        public Uri Blog { get; set; }
-
-        [JsonPropertyName("location")]
-        public Uri Location { get; set; }
-
-        [JsonPropertyName("email")]
-        public int Email { get; set; }
+        [JsonPropertyName("description")]
+        public Uri Description { get; set; }
         
     }
 }

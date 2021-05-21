@@ -73,11 +73,9 @@ namespace GameRestAPI
             Console.WriteLine("**************************");
             foreach (var org in organizations) {
                 var holder = org as Organization;
-                Console.WriteLine(holder.Name);
-                Console.WriteLine(holder.Company);
-                Console.WriteLine(holder.Blog);
-                Console.WriteLine(holder.Location);
-                Console.WriteLine(holder.Email);
+                Console.WriteLine(holder.Login);
+                Console.WriteLine(holder.URL);
+                Console.WriteLine(holder.Description);
             }
         }
 
