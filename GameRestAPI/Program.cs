@@ -73,13 +73,27 @@ namespace GameRestAPI
             Console.WriteLine("**************************");
             foreach (var org in organizations) {
                 var holder = org as Organization;
-                Console.WriteLine(holder);
-                Console.WriteLine();
+                Console.WriteLine(holder.Name);
+                Console.WriteLine(holder.Company);
+                Console.WriteLine(holder.Blog);
+                Console.WriteLine(holder.Location);
+                Console.WriteLine(holder.Email);
             }
         }
 
         static async Task CheckFollowers(string userName) {
-            throw new NotImplementedException();
+            var followers = await ProcessAPICall(userName, "followers");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"{userName}:s followers");
+            Console.WriteLine("**************************");
+            foreach (var follower in followers) {
+                var holder = follower as Follower;
+                Console.WriteLine(holder.Login);
+                Console.WriteLine(holder.URL);
+                Console.WriteLine(holder.FollowersURL);
+                Console.WriteLine();
+            }
         }
 
         static async Task CheckRepositories(string userName) {
@@ -107,19 +121,12 @@ namespace GameRestAPI
 
             var streamTask = Client.GetStreamAsync($"https://api.github.com/users/{user}/{operation}");
 
-            switch (operation) {
-                case "repos":
-                    return await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
-                    break;
-                case "orgs":
-                    return  await JsonSerializer.DeserializeAsync<List<Organization>>(await streamTask);
-                    break;
-                case "followers":
-                    return await JsonSerializer.DeserializeAsync<List<Follower>>(await streamTask);
-                    break;
-                default:
-                    return null;
-            }
+            return operation switch {
+                "repos" => await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask),
+                "orgs" => await JsonSerializer.DeserializeAsync<List<Organization>>(await streamTask),
+                "followers" => await JsonSerializer.DeserializeAsync<List<Follower>>(await streamTask),
+                _ => null
+            };
         }
     }
     
